@@ -1,0 +1,71 @@
+hs_code,description,category_id,unit_of_measure
+87032310,"Motor cars, spark-ignition engine 1500-3000cc, sedan",101,u
+87032190,"Motor cars, spark-ignition engine <=1000cc",101,u
+87033290,"Motor cars, diesel/semi-diesel engine 1500-2500cc, SUV/4x4",102,u
+87033390,"Motor cars, diesel engine >2500cc, SUV/4x4",102,u
+87042190,"Motor vehicles for goods transport, diesel, gvw<=5t",103,u
+87042290,"Motor vehicles for goods transport, diesel, 5-20t",103,u
+87111000,"Motorcycles, spark-ignition engine <=50cc",104,u
+87112000,"Motorcycles, spark-ignition engine 50-250cc",104,u
+87021019,"Buses/minibuses, diesel, 10-30 seats",105,u
+40111000,"New pneumatic tyres, of rubber, for motor cars",106,u
+85071000,Lead-acid electric accumulators/batteries for vehicles,106,u
+85171200,Smartphones and mobile telephones,201,u
+85176200,"Machines for reception/transmission of voice/data (routers, modems)",201,u
+84713000,Portable automatic data processing machines (laptops/tablets),202,u
+84714100,Desktop computers,202,u
+84433290,"Printers, multifunction office equipment",202,u
+85287200,"Television reception apparatus, colour",203,u
+85286900,Projectors and other display apparatus,203,u
+85219000,Satellite decoders/set-top boxes,203,u
+84182100,"Household refrigerators, compression-type",204,u
+84501100,"Household washing machines, fully automatic",204,u
+85166000,Electric ovens/cookers/stoves,204,u
+85167100,Electric coffee/tea makers,205,u
+85167900,Other electro-thermic appliances (kettles/toasters),205,u
+61091000,"T-shirts, singlets, cotton, knitted",301,kg
+62034200,"Men's trousers, cotton, woven",301,kg
+62046200,"Women's trousers, cotton, woven",301,kg
+63090000,Worn/used clothing and clothing accessories,302,kg
+64029900,"Footwear, rubber/plastic uppers",303,pr
+64039900,"Footwear, leather uppers",303,pr
+52081100,"Woven cotton fabric, unbleached",304,m
+11010000,Wheat or meslin flour,401,kg
+10063000,Semi/wholly milled rice,401,kg
+15179000,Margarine and edible cooking oil blends,401,kg
+17011400,Raw cane sugar,401,kg
+19053100,Sweet biscuits,402,kg
+18063100,"Chocolate, filled blocks/slabs",402,kg
+22030000,Beer made from malt,403,l
+22042100,"Wine of fresh grapes, containers <=2l",403,l
+22083000,Whisky,403,l
+22021000,"Waters, sweetened/flavoured (soft drinks)",404,l
+22011000,Mineral and aerated waters,404,l
+24022000,Cigarettes containing tobacco,405,u
+87019200,"Agricultural tractors, 75-130hp",501,u
+84195000,Irrigation pumps and sprinkler equipment,501,u
+84295200,"Excavators, mechanical shovels, self-propelled",502,u
+84271000,"Fork-lift trucks, self-propelled, electric",503,u
+85021100,"Generating sets, diesel, <=75kVA",504,u
+85414300,Photovoltaic solar panels/modules,504,u
+30049000,"Medicaments, mixed, packaged for retail sale",601,kg
+30021500,Vaccines for human medicine,601,kg
+90189090,Medical/surgical instruments and appliances,602,u
+90191000,Mechano-therapy/massage/oxygen therapy apparatus,602,u
+33049900,"Beauty/skin-care preparations, creams and lotions",701,kg
+33051000,Shampoos,702,l
+67030000,"Human hair, wigs and false beards/eyebrows",702,kg
+94036000,Wooden furniture (household),801,u
+94032000,Metal furniture (household),801,u
+94033000,"Office furniture, wooden",802,u
+25232900,"Portland cement, other than white",901,kg
+72104900,"Roofing sheets, iron/steel, zinc coated",902,kg
+69072100,Ceramic floor and wall tiles,903,m2
+10059010,Maize/hybrid seed for sowing,1001,kg
+31021000,Urea fertilizer,1002,kg
+38089100,"Insecticides, retail pack",1003,kg
+29053100,Ethylene glycol (industrial chemical),1101,kg
+95030010,"Toys, dolls and toy figures",1201,kg
+49019900,"Printed books, brochures",1202,kg
+93033000,"Sporting shotguns, single/double barrel",1301,u
+71131900,Jewelry of precious metal (gold/silver),1401,g

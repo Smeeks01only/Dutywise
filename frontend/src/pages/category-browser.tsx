@@ -1,6 +1,6 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { getCategories, getProducts } from '../api/search';
+import { explorerApi } from '../api/explorer';
 import { FolderTree, Package, ArrowRight, ChevronRight, Loader2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 
@@ -10,13 +10,13 @@ export function CategoryBrowserPage() {
   const navigate = useNavigate();
 
   const { data: categoriesData, isLoading: categoriesLoading } = useQuery({
-    queryKey: ['categories'],
-    queryFn: () => getCategories(),
+    queryKey: ['explorer-categories'],
+    queryFn: () => explorerApi.getCategories(),
   });
 
   const { data: categoryProducts, isLoading: productsLoading } = useQuery({
-    queryKey: ['categoryProducts', selectedCategoryId],
-    queryFn: () => getProducts({ category: selectedCategoryId }),
+    queryKey: ['explorer-products', selectedCategoryId],
+    queryFn: () => explorerApi.getProducts({ category: selectedCategoryId }),
     enabled: !!selectedCategoryId,
   });
 

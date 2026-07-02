@@ -1,0 +1,71 @@
+product_id,product_name,hs_code,category_id,brand,typical_unit_value_usd,condition,notes
+1,Toyota Corolla 1.8 Sedan (2019),87032310,101,Toyota,12500,Used,Popular re-import from Japan/UK
+2,Honda Fit 1.3 Hatchback (2017),87032190,101,Honda,6800,Used,Common low-cc commuter import
+3,Toyota Hilux 2.4 D-4D Double Cab (2020),87042190,103,Toyota,24000,Used,Most imported commercial pickup
+4,Toyota Land Cruiser Prado 3.0 D-4D (2021),87033390,102,Toyota,42000,Used,"High-value SUV, subject to top surtax band if older"
+5,Honda Fit Shuttle Hybrid (2018),87032190,101,Honda,7500,Used,Popular hybrid import from Japan
+6,Isuzu D-Max 3.0 (2019),87042190,103,Isuzu,21000,Used,
+7,Toyota Quantum 14-Seater Minibus (2016),87021019,105,Toyota,18000,Used,Popular kombi import
+8,Honda CB125 Motorcycle,87111000,104,Honda,1500,New,
+9,Bridgestone 265/65R17 Tyre,40111000,106,Bridgestone,180,New,Sold per unit
+10,Exide 12V 75Ah Car Battery,85071000,106,Exide,95,New,
+11,Samsung Galaxy A15,85171200,201,Samsung,210,New,
+12,iPhone 15,85171200,201,Apple,850,New,
+13,TP-Link Archer C6 Router,85176200,201,TP-Link,35,New,
+14,HP Pavilion 15 Laptop,84713000,202,HP,620,New,
+15,Dell OptiPlex Desktop,84714100,202,Dell,480,New,
+16,Epson L3250 Printer,84433290,202,Epson,190,New,
+17,Hisense 55-inch 4K TV,85287200,203,Hisense,350,New,
+18,BenQ Office Projector,85286900,203,BenQ,420,New,
+19,DStv Explora Decoder,85219000,203,MultiChoice,150,New,
+20,Samsung 350L Fridge,84182100,204,Samsung,480,New,
+21,LG 8kg Front Load Washing Machine,84501100,204,LG,410,New,
+22,Defy Gemini 4-Plate Stove,85166000,204,Defy,260,New,
+23,Kenwood Electric Kettle,85167900,205,Kenwood,22,New,
+24,"Mellow Cow Cotton T-Shirt (bulk, per kg)",61091000,301,Assorted,8,New,Priced per kg wholesale
+25,"Men's Denim Jeans (bulk, per kg)",62034200,301,Assorted,9,New,Priced per kg wholesale
+26,Used Clothing Bale - Grade A (per kg),63090000,302,Assorted,2,Used,Import restricted - permit/ban applies
+27,Nike Running Shoes,64029900,303,Nike,55,New,Per pair
+28,Leather Office Shoes,64039900,303,Assorted,30,New,Per pair
+29,Roller Meal Maize Meal (10kg),11010000,401,Local/Import Blend,6,New,VAT zero-rated basic foodstuff
+30,Tastic Parboiled Rice (10kg),10063000,401,Tastic,9,New,VAT zero-rated basic foodstuff
+31,Sunflower Cooking Oil (2L),15179000,401,Pure Drop,4,New,VAT zero-rated basic foodstuff
+32,"White Sugar (per kg, bulk import)",17011400,401,Assorted,1,New,
+33,"Assorted Sweet Biscuits (per kg, bulk)",19053100,402,Assorted,3,New,
+34,Cadbury Dairy Milk Chocolate Slab,18063100,402,Cadbury,3,New,
+35,Castle Lager Beer (case of 24 x 340ml),22030000,403,Castle,22,New,Excisable
+36,South African Red Wine (750ml),22042100,403,Assorted,7,New,Excisable
+37,Johnnie Walker Red Label Whisky (750ml),22083000,403,Diageo,18,New,Excisable
+38,Coca-Cola 2L Bottle (case of 6),22021000,404,Coca-Cola,8,New,
+39,"Aquafresh Bottled Water (500ml, per unit)",22011000,404,Assorted,0.4,New,
+40,"Cigarettes, per carton of 10 packs",24022000,405,Assorted,12,New,Excisable
+41,New Holland TT75 Tractor,87019200,501,New Holland,28000,New,
+42,Diesel Irrigation Pump 3-inch,84195000,501,Honda Power,650,New,
+43,CAT 320D Excavator (used),84295200,502,Caterpillar,65000,Used,
+44,Electric Forklift 2.5T,84271000,503,Toyota Material Handling,18500,New,
+45,Diesel Generator 50kVA,85021100,504,Perkins,8200,New,
+46,Solar Panel 450W Monocrystalline,85414300,504,Jinko Solar,95,New,
+47,Panadol Extra (packaged retail),30049000,601,GSK,5,New,MCAZ registration required
+48,"Human Vaccine Vials (per dose, cold chain)",30021500,601,Assorted,12,New,MCAZ + MOHCC permit required
+49,Digital Blood Pressure Monitor,90189090,602,Omron,40,New,
+50,Physiotherapy TENS Machine,90191000,602,Assorted,85,New,
+51,Nivea Body Lotion 400ml,33049900,701,Nivea,5,New,
+52,Dark & Lovely Relaxer Kit,33049900,701,L'Oreal,6,New,
+53,Sunsilk Shampoo 400ml,33051000,702,Unilever,4,New,
+54,Human Hair Wig - Brazilian 24-inch,67030000,702,Assorted,120,New,
+55,3-Piece Wooden Sofa Set,94036000,801,Assorted,450,New,
+56,Steel Bunk Bed Frame,94032000,801,Assorted,130,New,
+57,Executive Office Desk,94033000,802,Assorted,220,New,
+58,PPC Portland Cement 50kg Bag,25232900,901,PPC,9,New,
+59,"IBR Roofing Sheet (per m, 0.47mm gauge)",72104900,902,Chromadek,7,New,
+60,Ceramic Floor Tile 600x600mm (per m2),69072100,903,Assorted,8,New,
+61,Pioneer Hybrid Maize Seed (10kg bag),10059010,1001,Pioneer,45,New,PQSI permit required
+62,Compound D Fertilizer (50kg bag),31021000,1002,ZFC,38,New,
+63,Karate Insecticide (1L),38089100,1003,Syngenta,25,New,PQSI/EMA permit may apply
+64,Industrial Ethylene Glycol (per 25kg drum),29053100,1101,Assorted,60,New,EMA hazardous substance permit required
+65,Assorted Plastic Toy Set,95030010,1201,Assorted,6,New,SAZ safety certification required
+66,School Textbook (per unit),49019900,1202,Assorted,5,New,VAT exempt educational material
+67,12-Gauge Sporting Shotgun,93033000,1301,Assorted,900,New,ZRP-CFR firearms permit mandatory
+68,9K Gold Wedding Band (per gram),71131900,1401,Assorted,75,New,Precious metal - valuation per gram
+69,Suzuki Alto 1.0 Hatchback (2018),87032190,101,Suzuki,5200,Used,
+70,Mercedes-Benz Actros Truck (2015),87042290,103,Mercedes-Benz,55000,Used,"Heavy commercial vehicle, >5t GVW"

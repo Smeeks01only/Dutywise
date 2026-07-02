@@ -36,8 +36,12 @@ export function LoginPage() {
   const onSubmit = async (data: LoginCredentials) => {
     try {
       setAuthError(null)
-      await login(data)
-      navigate(from, { replace: true })
+      const loggedInUser = await login(data)
+      if (loggedInUser.is_staff) {
+        navigate('/admin', { replace: true })
+      } else {
+        navigate(from, { replace: true })
+      }
     } catch (err: any) {
       if (err.response?.status === 401) {
         setAuthError("Invalid email or password.")

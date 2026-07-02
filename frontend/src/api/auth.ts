@@ -38,6 +38,7 @@ export interface User {
   preferred_currency: string
   preferred_theme: string
   email_verified: boolean
+  is_staff: boolean
   profile?: any
 }
 

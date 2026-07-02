@@ -111,6 +111,8 @@ class Product(UUIDMixin, TimestampMixin, SoftDeleteMixin):
     )
     status = models.CharField(max_length=20, choices=[('Active', 'Active'), ('Inactive', 'Inactive')], default='Active')
     image = models.ImageField(upload_to='products/', blank=True, null=True, help_text="Product image placeholder")
+    typical_unit_value_usd = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    condition = models.CharField(max_length=50, blank=True, null=True)
 
     history = HistoricalRecords()
 

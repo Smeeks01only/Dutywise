@@ -1,0 +1,17 @@
+restriction_id,hs_code,category_id,restriction_type,permit_or_licence_name,issuing_agency_id,legal_reference,notes
+1,63090000,302,Banned (with narrow exceptions),Used Clothing Import Permit (charitable donations only),1,SI 122 of 2015 / Customs and Excise (Prohibited and Restricted Imports),General commercial importation of second-hand clothing bales is prohibited to protect the local textile industry
+2,93033000,1301,Licence Required,Firearm Import Permit,8,Firearms Act [Chapter 10:09],Strict end-user verification and quota controls apply
+3,30049000,601,Permit Required,MCAZ Import Permit,3,Medicines and Allied Substances Control Act [Chapter 15:03],Unregistered medicines may not be cleared
+4,30021500,601,Permit Required,MCAZ + MOHCC Cold Chain Import Permit,3,Medicines and Allied Substances Control Act [Chapter 15:03],Cold-chain compliance certificate required
+5,10059010,1001,Permit Required,Plant Import Permit (Phytosanitary Certificate),7,Plant Pests and Diseases Act [Chapter 19:08],Seed variety must be on the approved national list
+6,38089100,1003,Permit Required,Agro-chemical Registration & Import Permit,7,"Fertilizers, Farm Feeds and Remedies Act [Chapter 18:12]",Product must be registered before import
+7,29053100,1101,Permit Required,Hazardous Substance Import Licence,4,Environmental Management Act [Chapter 20:27],EMA licence required prior to shipment
+8,85171200,201,Type-Approval Required,POTRAZ Type-Approval Certificate,12,Postal and Telecommunications Act [Chapter 12:05],Required per handset model before commercial sale
+9,85219000,203,Licence Required,BAZ Decoder Import Clearance,13,Broadcasting Services Act [Chapter 12:06],Applies to broadcast reception/transmission equipment
+10,95030010,1201,Certification Required,SAZ Toy Safety Certificate,5,Standards Act [Chapter 14:20],Compulsory standard for children's toys
+11,87042290,103,Age Restriction,Vehicle Age Limit - Commercial,9,Control of Goods (Open General Import Licence) Notice,Heavy commercial vehicles over 10 years old restricted from import
+12,87032310,101,Age Restriction,Vehicle Age Limit - Passenger,9,Control of Goods (Open General Import Licence) Notice,Right-hand-drive requirement; steering conversion of LHD vehicles prohibited
+13,17011400,401,Quota/Licence Required,Sugar Import Licence,1,Control of Goods (Open General Import Licence) Notice,Import licence required outside of approved quota to protect local millers
+14,11010000,401,Quota/Licence Required,Grain/Flour Import Licence,15,Grain Marketing Act [Chapter 18:14],GMB oversight on bulk wheat/flour imports
+15,24022000,405,Licence Required,Tobacco Products Import Licence,1,Customs and Excise Act [Chapter 23:02],Additional excise stamps required on packaging
+16,71131900,1401,Declaration Required,Precious Metals Import Declaration,19,Gold Trade Act [Chapter 21:03],Declaration to Ministry of Mines for gold/precious metal content

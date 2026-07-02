@@ -8,9 +8,9 @@ interface AuthContextType {
   user: User | null
   isAuthenticated: boolean
   isLoading: boolean
-  login: (credentials: LoginCredentials) => Promise<void>
+  login: (credentials: LoginCredentials) => Promise<User>
   register: (credentials: RegisterCredentials) => Promise<void>
-  logout: () => Promise<void>
+  logout: (redirectUrl?: string) => Promise<void>
   updateProfile: (profileData: Partial<User>) => Promise<void>
 }
 
@@ -52,6 +52,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('access_token', data.access)
     localStorage.setItem('refresh_token', data.refresh)
     setUser(data.user)
+    return data.user
   }
 
   const register = async (credentials: RegisterCredentials) => {
@@ -61,7 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(data.user)
   }
 
-  const logout = async () => {
+  const logout = async (redirectUrl: string = '/login') => {
     try {
       const refreshToken = localStorage.getItem('refresh_token')
       if (refreshToken) {
@@ -73,7 +74,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       localStorage.removeItem('access_token')
       localStorage.removeItem('refresh_token')
       setUser(null)
-      window.location.href = '/login'
+      window.location.href = redirectUrl
     }
   }
 

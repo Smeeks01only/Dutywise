@@ -9,6 +9,8 @@ urlpatterns = [
     path('api/auth/', include('accounts.urls')),
     path('api/customs/', include('customs.urls')),
     path('api/calculations/', include('calculations.urls')),
+    path('api/admin/', include('customs.admin_urls')),
+    path('api/explorer/', include('customs.explorer_urls')),
 ]
 
 if settings.DEBUG:

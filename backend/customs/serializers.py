@@ -76,3 +76,34 @@ class TradeAgreementSerializer(serializers.ModelSerializer):
     class Meta:
         model = TradeAgreement
         fields = ['id', 'name', 'countries_covered', 'eligibility_rules', 'required_certificate', 'effective_from', 'effective_to']
+
+from customs.models import CustomsGlossaryTerm, UserBookmark, RecentlyViewedItem
+
+class CustomsGlossaryTermSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomsGlossaryTerm
+        fields = ['id', 'term', 'definition', 'example', 'related_terms']
+
+class UserBookmarkSerializer(serializers.ModelSerializer):
+    content_type_model = serializers.CharField(source='content_type.model', read_only=True)
+    content_object_str = serializers.SerializerMethodField()
+
+    class Meta:
+        model = UserBookmark
+        fields = ['id', 'content_type', 'content_type_model', 'object_id', 'content_object_str', 'notes', 'created_at']
+        read_only_fields = ['id', 'created_at']
+
+    def get_content_object_str(self, obj):
+        return str(obj.content_object)
+
+class RecentlyViewedItemSerializer(serializers.ModelSerializer):
+    content_type_model = serializers.CharField(source='content_type.model', read_only=True)
+    content_object_str = serializers.SerializerMethodField()
+
+    class Meta:
+        model = RecentlyViewedItem
+        fields = ['id', 'content_type', 'content_type_model', 'object_id', 'content_object_str', 'updated_at']
+        read_only_fields = ['id', 'updated_at']
+
+    def get_content_object_str(self, obj):
+        return str(obj.content_object)

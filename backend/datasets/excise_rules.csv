@@ -1,0 +1,9 @@
+excise_id,hs_code,excise_type,rate_percent,specific_amount_usd,specific_unit,legal_reference,notes
+1,22030000,Specific,,0.6,per litre,Finance Act [Chapter 23:04] - Excise Duty Schedule,"Excise duty on clear/malt beer, charged in addition to customs duty and VAT"
+2,22042100,Specific,,0.8,per litre,Finance Act [Chapter 23:04] - Excise Duty Schedule,Excise duty on wine
+3,22083000,Specific,,4.0,per litre absolute alcohol,Finance Act [Chapter 23:04] - Excise Duty Schedule,"Excise duty on spirits (whisky, gin, vodka etc.)"
+4,24022000,Specific,,5.0,per 20-cigarette pack equivalent,Finance Act [Chapter 23:04] - Excise Duty Schedule,"Excise duty on cigarettes, plus ad valorem component"
+5,24022000,Ad Valorem,20,,,Finance Act [Chapter 23:04] - Excise Duty Schedule,Ad valorem excise component on cigarettes (compound duty)
+6,27101210,Specific,,0.3,per litre,Finance Act [Chapter 23:04] - Excise Duty Schedule,"Excise duty on petrol (unleaded) - fuel not separately listed in hs_codes.csv, reference only"
+7,27101921,Specific,,0.25,per litre,Finance Act [Chapter 23:04] - Excise Duty Schedule,"Excise duty on diesel - fuel not separately listed in hs_codes.csv, reference only"
+8,85171200,Ad Valorem,5,,,Finance Act [Chapter 23:04] - Excise Duty Schedule (Airtime/Data levy analogue),Illustrative telecommunications-linked excise; verify current SI before use

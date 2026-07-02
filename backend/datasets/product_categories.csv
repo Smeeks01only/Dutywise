@@ -1,0 +1,56 @@
+category_id,category_name,parent_category_id,description
+1,Vehicles & Transport,,"Motor vehicles, motorcycles, trailers and transport equipment"
+101,Passenger Cars (Sedans),1,Saloon/sedan passenger motor vehicles
+102,SUVs & Light 4x4s,1,Sport utility and light 4x4 passenger vehicles
+103,Commercial Trucks,1,Goods-carrying vehicles including light and heavy trucks
+104,Motorcycles & Scooters,1,Two and three-wheeled motor vehicles
+105,Buses & Minibuses,1,Passenger transport vehicles of 10+ seats
+106,Vehicle Parts & Accessories,1,"Spare parts, tyres, batteries and accessories"
+2,Electronics & Appliances,,"Consumer electronics, IT equipment and household appliances"
+201,Mobile Phones & Accessories,2,"Smartphones, feature phones and chargers/cases"
+202,Computers & Laptops,2,"Desktops, laptops, tablets and peripherals"
+203,Televisions & Home Entertainment,2,"TVs, sound systems, decoders"
+204,Household Appliances,2,"Refrigerators, stoves, washing machines, microwaves"
+205,Small Kitchen Appliances,2,"Kettles, blenders, toasters"
+3,Clothing & Textiles,,"Apparel, footwear and textile products"
+301,New Clothing,3,New manufactured garments
+302,Used Clothing (Mabhero),3,Second-hand clothing bales - import restricted
+303,Footwear,3,"Shoes, boots and sandals"
+304,Textile Fabric & Materials,3,"Fabric rolls, yarn and raw textile material"
+4,Food & Beverages,,"Foodstuffs, beverages and agro-processed products"
+401,Basic Foodstuffs,4,"Maize meal, bread flour, rice, cooking oil - VAT zero-rated"
+402,Processed & Packaged Food,4,"Snacks, confectionery, canned goods"
+403,Alcoholic Beverages,4,"Beer, wine and spirits - excisable"
+404,Soft Drinks & Bottled Water,4,Non-alcoholic beverages
+405,Tobacco Products,4,Cigarettes and tobacco - excisable
+5,Machinery & Industrial Equipment,,"Capital goods, industrial and agricultural machinery"
+501,Agricultural Machinery,5,"Tractors, ploughs, irrigation equipment"
+502,Construction Machinery,5,"Excavators, graders, mixers"
+503,Manufacturing Equipment,5,Factory and processing machinery
+504,Generators & Power Equipment,5,"Generators, transformers, solar equipment"
+6,Pharmaceuticals & Medical,,"Medicines, medical devices and health commodities"
+601,Prescription Medicines,6,Human medicines requiring MCAZ registration
+602,Medical Devices & Equipment,6,Diagnostic and hospital equipment
+7,Cosmetics & Personal Care,,"Beauty, hygiene and personal care products"
+701,Skincare & Cosmetics,7,"Creams, lotions, make-up"
+702,Haircare Products,7,"Shampoos, wigs, extensions"
+8,Furniture & Household Goods,,"Furniture, homeware and decor"
+801,Household Furniture,8,"Beds, sofas, tables, chairs"
+802,Office Furniture,8,"Desks, office chairs, filing cabinets"
+9,Building Materials,,Construction and hardware materials
+901,Cement & Aggregates,9,"Cement, sand additives"
+902,Roofing & Structural Steel,9,"Roofing sheets, steel beams"
+903,Tiles & Sanitaryware,9,"Ceramic tiles, basins, toilets"
+10,Agricultural Inputs,,"Seeds, fertilizers and agro-chemicals"
+1001,Seeds & Planting Material,10,Certified seed varieties
+1002,Fertilizers,10,Chemical and organic fertilizers
+1003,Pesticides & Agro-chemicals,10,Crop protection chemicals
+11,Chemicals,,Industrial and hazardous chemicals
+1101,Industrial Chemicals,11,"Solvents, acids, raw chemical inputs"
+12,"Toys, Books & Stationery",,"Toys, games, books and office stationery"
+1201,Toys & Games,12,Children's toys and games
+1202,Books & Educational Materials,12,Printed books and educational supplies
+13,Firearms & Ammunition,,Controlled weapons and ammunition
+1301,Sporting Firearms,13,Licensed hunting/sporting firearms
+14,Jewelry & Precious Metals,,"Jewelry, gold, silver and precious stones"
+1401,Jewelry,14,Finished jewelry items

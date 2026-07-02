@@ -1,0 +1,16 @@
+currency_code,currency_name,symbol,decimal_places,is_legal_tender_zw
+USD,United States Dollar,$,2,Yes
+ZWG,Zimbabwe Gold (ZiG),ZiG,2,Yes
+ZAR,South African Rand,R,2,Yes
+EUR,Euro,€,2,No
+GBP,British Pound Sterling,£,2,No
+CNY,Chinese Yuan Renminbi,¥,2,No
+BWP,Botswana Pula,P,2,No
+ZMW,Zambian Kwacha,ZK,2,No
+MZN,Mozambican Metical,MT,2,No
+INR,Indian Rupee,₹,2,No
+AED,UAE Dirham,د.إ,2,No
+JPY,Japanese Yen,¥,0,No
+AUD,Australian Dollar,A$,2,No
+CAD,Canadian Dollar,C$,2,No
+NAD,Namibian Dollar,N$,2,No

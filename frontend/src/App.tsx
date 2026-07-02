@@ -29,6 +29,28 @@ import { ProductDetailsPage } from "./pages/product-details"
 import { HSCodeDetailsPage } from "./pages/hscode-details"
 import { CategoryBrowserPage } from "./pages/category-browser"
 
+import { AdminLayout } from "./components/layout/AdminLayout"
+import { AdminRoute } from "./components/layout/AdminRoute"
+import { AdminDashboard } from "./pages/admin/AdminDashboard"
+import { AdminUsers } from "./pages/admin/AdminUsers"
+import { AdminProducts } from "./pages/admin/AdminProducts"
+import { AdminHSCodes } from "./pages/admin/AdminHSCodes"
+import { AdminTariffs } from "./pages/admin/AdminTariffs"
+import { AdminGlossary } from "./pages/admin/AdminGlossary"
+import { AdminRestrictions } from "./pages/admin/AdminRestrictions"
+import { AdminAgencies } from "./pages/admin/AdminAgencies"
+import { AdminAgreements } from "./pages/admin/AdminAgreements"
+
+import { HSChapterBrowser } from "./pages/explorer/HSChapterBrowser"
+import { HSCodeExplorer } from "./pages/explorer/HSCodeExplorer"
+import { DutyRateExplorer } from "./pages/explorer/DutyRateExplorer"
+import { ImportRestrictions } from "./pages/explorer/ImportRestrictions"
+import { GovernmentAgencies } from "./pages/explorer/GovernmentAgencies"
+import { TradeAgreements } from "./pages/explorer/TradeAgreements"
+import { CustomsGlossary } from "./pages/explorer/CustomsGlossary"
+import { CompareHSCodes } from "./pages/explorer/CompareHSCodes"
+import { BookmarksPanel } from "./pages/explorer/BookmarksPanel"
+
 const queryClient = new QueryClient()
 
 export default function App() {
@@ -48,6 +70,17 @@ export default function App() {
               <Route path="/product/:id" element={<ProductDetailsPage />} />
               <Route path="/hs-code/:id" element={<HSCodeDetailsPage />} />
               <Route path="/categories" element={<CategoryBrowserPage />} />
+
+              {/* Explorer Sub-Routes */}
+              <Route path="/explorer/chapters" element={<HSChapterBrowser />} />
+              <Route path="/explorer/hscodes" element={<HSCodeExplorer />} />
+              <Route path="/explorer/tariffs" element={<DutyRateExplorer />} />
+              <Route path="/explorer/restrictions" element={<ImportRestrictions />} />
+              <Route path="/explorer/agencies" element={<GovernmentAgencies />} />
+              <Route path="/explorer/agreements" element={<TradeAgreements />} />
+              <Route path="/explorer/glossary" element={<CustomsGlossary />} />
+              <Route path="/explorer/compare" element={<CompareHSCodes />} />
+              <Route path="/explorer/bookmarks" element={<BookmarksPanel />} />
             </Route>
 
             {/* Dashboard Routes - Protected */}
@@ -66,6 +99,21 @@ export default function App() {
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/reset-password" element={<ResetPasswordPage />} />
+            </Route>
+
+            {/* Admin Routes */}
+            <Route path="/admin" element={<AdminRoute />}>
+              <Route element={<AdminLayout />}>
+                <Route index element={<AdminDashboard />} />
+                <Route path="users" element={<AdminUsers />} />
+                <Route path="products" element={<AdminProducts />} />
+                <Route path="hscodes" element={<AdminHSCodes />} />
+                <Route path="tariffs" element={<AdminTariffs />} />
+                <Route path="glossary" element={<AdminGlossary />} />
+                <Route path="restrictions" element={<AdminRestrictions />} />
+                <Route path="agencies" element={<AdminAgencies />} />
+                <Route path="agreements" element={<AdminAgreements />} />
+              </Route>
             </Route>
 
             {/* Fallback */}

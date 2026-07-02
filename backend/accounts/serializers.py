@@ -19,9 +19,9 @@ class UserSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'email', 'first_name', 'last_name', 'phone_number', 
             'country', 'profile_picture', 'preferred_currency', 
-            'preferred_theme', 'email_verified', 'profile'
+            'preferred_theme', 'email_verified', 'is_staff', 'profile'
         )
-        read_only_fields = ('id', 'email', 'email_verified')
+        read_only_fields = ('id', 'email', 'email_verified', 'is_staff')
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])

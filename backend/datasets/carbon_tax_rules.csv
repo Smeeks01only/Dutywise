@@ -1,0 +1,9 @@
+carbon_tax_id,applies_to_category_id,engine_capacity_min_cc,engine_capacity_max_cc,carbon_tax_amount_usd,billing_frequency,legal_reference,notes
+1,101,0,1500,30,One-off at import / annual thereafter,Finance Act [Chapter 23:04] - Carbon Tax Schedule,Illustrative banding by engine capacity; verify current Statutory Instrument before production use
+2,101,1501,2000,45,One-off at import / annual thereafter,Finance Act [Chapter 23:04] - Carbon Tax Schedule,
+3,102,2001,3000,75,One-off at import / annual thereafter,Finance Act [Chapter 23:04] - Carbon Tax Schedule,
+4,102,3001,6000,120,One-off at import / annual thereafter,Finance Act [Chapter 23:04] - Carbon Tax Schedule,
+5,103,0,3000,40,One-off at import / annual thereafter,Finance Act [Chapter 23:04] - Carbon Tax Schedule,Commercial trucks/light haulage banding
+6,103,3001,99999,90,One-off at import / annual thereafter,Finance Act [Chapter 23:04] - Carbon Tax Schedule,
+7,104,0,250,10,One-off at import / annual thereafter,Finance Act [Chapter 23:04] - Carbon Tax Schedule,Motorcycles/scooters banding
+8,105,0,6000,60,One-off at import / annual thereafter,Finance Act [Chapter 23:04] - Carbon Tax Schedule,Buses/minibuses banding

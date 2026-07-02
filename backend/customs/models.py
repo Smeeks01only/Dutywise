@@ -67,3 +67,66 @@ class DutyExemption(UUIDMixin, TimestampMixin, SoftDeleteMixin):
 
     def __str__(self):
         return self.name
+
+
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+class CustomsGlossaryTerm(UUIDMixin, TimestampMixin, SoftDeleteMixin):
+    """
+    Dictionary of customs terminology for the explorer.
+    """
+    term = models.CharField(max_length=255, unique=True, db_index=True)
+    definition = models.TextField()
+    example = models.TextField(blank=True, null=True)
+    related_terms = models.ManyToManyField('self', blank=True, symmetrical=True)
+
+    history = HistoricalRecords()
+
+    class Meta:
+        ordering = ['term']
+        verbose_name_plural = "Customs Glossary Terms"
+
+    def __str__(self):
+        return self.term
+
+class UserBookmark(UUIDMixin, TimestampMixin):
+    """
+    Polymorphic bookmark model for users to save products, HS codes, etc.
+    """
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookmarks')
+    
+    # Generic relation
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.CharField(max_length=36) # UUID is max 36 chars
+    content_object = GenericForeignKey('content_type', 'object_id')
+
+    notes = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        unique_together = ('user', 'content_type', 'object_id')
+
+    def __str__(self):
+        return f"{self.user.email} bookmarked {self.content_object}"
+
+class RecentlyViewedItem(UUIDMixin, TimestampMixin):
+    """
+    Polymorphic recently viewed model.
+    """
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recently_viewed')
+    
+    # Generic relation
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.CharField(max_length=36)
+    content_object = GenericForeignKey('content_type', 'object_id')
+
+    class Meta:
+        ordering = ['-updated_at'] # Updated when viewed again
+        unique_together = ('user', 'content_type', 'object_id')
+
+    def __str__(self):
+        return f"{self.user.email} viewed {self.content_object}"

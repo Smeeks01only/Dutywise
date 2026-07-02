@@ -65,7 +65,7 @@ export function GlobalSearchBar() {
   };
 
   return (
-    <div ref={containerRef} className="relative w-full max-w-md hidden md:block ml-4 mr-4">
+    <div ref={containerRef} className="relative w-full max-w-md mx-auto">
       <form onSubmit={handleSearchSubmit} className="relative">
         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
           <Search className="h-4 w-4 text-slate-400" />

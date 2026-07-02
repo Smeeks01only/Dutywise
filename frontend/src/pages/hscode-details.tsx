@@ -1,7 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getHSCode } from '../api/search';
-import { FileText, ArrowLeft, Calculator, BookOpen, AlertTriangle } from 'lucide-react';
+import { explorerApi } from '../api/explorer';
+import { FileText, ArrowLeft, Calculator, BookOpen, AlertTriangle, Shield, DollarSign } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
 
@@ -15,8 +16,23 @@ export function HSCodeDetailsPage() {
     enabled: !!id,
   });
 
+  const { data: tariffs } = useQuery({
+    queryKey: ['hscode-tariffs', id],
+    queryFn: () => explorerApi.getTariffs({ hs_code: id }),
+    enabled: !!id,
+  });
+
+  const { data: restrictions } = useQuery({
+    queryKey: ['hscode-restrictions', id],
+    queryFn: () => explorerApi.getRestrictions({ hs_code: id }),
+    enabled: !!id,
+  });
+
   if (isLoading) return <div className="p-12 text-center">Loading HS Code details...</div>;
   if (isError || !hsCode) return <div className="p-12 text-center text-red-500">Error loading HS Code or not found.</div>;
+
+  const tariffsList = Array.isArray(tariffs) ? tariffs : tariffs?.results || [];
+  const restrictionsList = Array.isArray(restrictions) ? restrictions : restrictions?.results || [];
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -62,6 +78,65 @@ export function HSCodeDetailsPage() {
               </CardContent>
             </Card>
           )}
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2"><DollarSign className="text-primary" size={20} /> Applicable Tariffs & Taxes</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {tariffsList.length > 0 ? (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-sm">
+                    <thead className="bg-slate-50 border-b border-slate-200 text-slate-600">
+                      <tr>
+                        <th className="px-4 py-3 font-medium">Type</th>
+                        <th className="px-4 py-3 font-medium">Rate</th>
+                        <th className="px-4 py-3 font-medium">Origin</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {tariffsList.map((t: any) => (
+                        <tr key={t.id}>
+                          <td className="px-4 py-3 font-medium">{t.tariff_type}</td>
+                          <td className="px-4 py-3 font-semibold text-slate-900">{t.percentage_rate ? `${t.percentage_rate}%` : `$${t.fixed_amount}`}</td>
+                          <td className="px-4 py-3 text-slate-500">{t.country_iso || 'General'}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <p className="text-slate-500 text-sm">No specific tariff rates configured for this HS Code.</p>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2"><Shield className="text-red-500" size={20} /> Import Restrictions</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {restrictionsList.length > 0 ? (
+                <div className="space-y-4">
+                  {restrictionsList.map((r: any) => (
+                    <div key={r.id} className="p-4 bg-slate-50 border border-slate-200 rounded-lg">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-semibold text-slate-900">{r.restriction_type}</span>
+                        <span className="text-xs text-slate-500">{r.agency_name}</span>
+                      </div>
+                      <p className="text-sm text-slate-700">{r.description}</p>
+                      <div className="mt-2 text-xs flex gap-2">
+                        {r.license_required && <span className="bg-white border border-slate-200 px-2 py-1 rounded">License Required</span>}
+                        {r.permit_required && <span className="bg-white border border-slate-200 px-2 py-1 rounded">Permit Required</span>}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-slate-500 text-sm">No known import restrictions for this HS Code.</p>
+              )}
+            </CardContent>
+          </Card>
           
           <Card>
             <CardHeader>

@@ -1,0 +1,16 @@
+rate_id,currency_code,rate_to_usd,rate_date,source,rate_type
+1,USD,1.0,2026-06-30,RBZ,Interbank (base currency)
+2,ZWG,26.9412,2026-06-30,RBZ,Interbank mid-rate
+3,ZAR,18.15,2026-06-30,RBZ,Interbank mid-rate
+4,EUR,0.92,2026-06-30,RBZ,Interbank mid-rate
+5,GBP,0.79,2026-06-30,RBZ,Interbank mid-rate
+6,CNY,7.18,2026-06-30,RBZ,Interbank mid-rate
+7,BWP,13.62,2026-06-30,RBZ,Interbank mid-rate
+8,ZMW,26.85,2026-06-30,RBZ,Interbank mid-rate
+9,MZN,63.9,2026-06-30,RBZ,Interbank mid-rate
+10,INR,85.4,2026-06-30,RBZ,Interbank mid-rate
+11,AED,3.6725,2026-06-30,RBZ,Interbank mid-rate
+12,JPY,152.3,2026-06-30,RBZ,Interbank mid-rate
+13,AUD,1.52,2026-06-30,RBZ,Interbank mid-rate
+14,CAD,1.37,2026-06-30,RBZ,Interbank mid-rate
+15,NAD,18.15,2026-06-30,RBZ,Pegged 1:1 to ZAR

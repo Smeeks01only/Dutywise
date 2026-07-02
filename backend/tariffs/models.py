@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from core.models import UUIDMixin, TimestampMixin, SoftDeleteMixin, Country
-from products.models import HSCode
+from products.models import HSCode, Category
 from customs.models import TradeAgreement, GovernmentAgency
 from simple_history.models import HistoricalRecords
 from decimal import Decimal
@@ -114,3 +114,79 @@ class ImportRestriction(UUIDMixin, TimestampMixin, SoftDeleteMixin):
 
     def __str__(self):
         return f"{self.get_restriction_type_display()} - {self.hs_code.code}"
+
+class VATRule(UUIDMixin, TimestampMixin, SoftDeleteMixin):
+    hs_code = models.ForeignKey(HSCode, on_delete=models.CASCADE, related_name='vat_rules')
+    vat_rate_percent = models.DecimalField(max_digits=5, decimal_places=2, default=Decimal('15.00'))
+    is_zero_rated = models.BooleanField(default=False)
+    is_exempt = models.BooleanField(default=False)
+    exemption_reason = models.TextField(blank=True, null=True)
+    legal_reference = models.CharField(max_length=255, blank=True, null=True)
+    
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return f"VAT Rule for {self.hs_code.code}"
+
+
+class ExciseRule(UUIDMixin, TimestampMixin, SoftDeleteMixin):
+    hs_code = models.ForeignKey(HSCode, on_delete=models.CASCADE, related_name='excise_rules')
+    excise_type = models.CharField(max_length=50) # Specific, Ad Valorem, Compound
+    rate_percent = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    specific_amount_usd = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    specific_unit = models.CharField(max_length=50, blank=True, null=True)
+    legal_reference = models.CharField(max_length=255, blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
+    
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return f"Excise Rule for {self.hs_code.code}"
+
+
+class SurtaxRule(UUIDMixin, TimestampMixin, SoftDeleteMixin):
+    applies_to_category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='surtax_rules')
+    vehicle_type = models.CharField(max_length=100, blank=True, null=True)
+    min_age_years = models.IntegerField(blank=True, null=True)
+    max_age_years = models.IntegerField(blank=True, null=True)
+    surtax_rate_percent = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    calculated_on = models.CharField(max_length=100, blank=True, null=True)
+    legal_reference = models.CharField(max_length=255, blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
+    
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return f"Surtax Rule for {self.applies_to_category.name}"
+
+
+class CarbonTaxRule(UUIDMixin, TimestampMixin, SoftDeleteMixin):
+    applies_to_category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='carbon_tax_rules')
+    engine_capacity_min_cc = models.IntegerField(blank=True, null=True)
+    engine_capacity_max_cc = models.IntegerField(blank=True, null=True)
+    carbon_tax_amount_usd = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    billing_frequency = models.CharField(max_length=100, blank=True, null=True)
+    legal_reference = models.CharField(max_length=255, blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
+    
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return f"Carbon Tax for {self.applies_to_category.name}"
+
+
+class GovernmentFee(UUIDMixin, TimestampMixin, SoftDeleteMixin):
+    fee_name = models.CharField(max_length=255)
+    applicable_to = models.CharField(max_length=255, blank=True, null=True)
+    fee_basis = models.CharField(max_length=255, blank=True, null=True)
+    amount_usd = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    amount_percent = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    agency = models.ForeignKey(GovernmentAgency, on_delete=models.SET_NULL, null=True, blank=True)
+    legal_reference = models.CharField(max_length=255, blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
+    
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return self.fee_name
+

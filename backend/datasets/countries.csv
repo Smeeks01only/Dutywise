@@ -1,0 +1,27 @@
+country_id,country_name,iso2,iso3,currency_code,region,trade_bloc_membership,is_major_trade_partner,notes
+1,Zimbabwe,ZW,ZWE,ZWG,Southern Africa,SADC;COMESA;AfCFTA,No,Home country / destination for all imports
+2,South Africa,ZA,ZAF,ZAR,Southern Africa,SADC;AfCFTA,Yes,Largest source of imports; Beitbridge is the main border post
+3,Mozambique,MZ,MOZ,MZN,Southern Africa,SADC;AfCFTA,Yes,Transit route via Beira port and Forbes/Machipanda border
+4,China,CN,CHN,CNY,East Asia,AfCFTA (via bilateral),Yes,"Leading source of electronics, machinery and general merchandise"
+5,Zambia,ZM,ZMB,ZMW,Southern Africa,SADC;COMESA;AfCFTA,Yes,Transit via Chirundu border post
+6,Botswana,BW,BWA,BWP,Southern Africa,SADC;AfCFTA,Yes,Plumtree/Ramokgwebana border post
+7,United Arab Emirates,AE,ARE,AED,Middle East,AfCFTA (via bilateral),Yes,Re-export hub for electronics and gold trade
+8,United Kingdom,GB,GBR,GBP,Europe,None,Yes,Historical trade partner; machinery and vehicles
+9,United States,US,USA,USD,North America,None,No,AGOA-related trade for exports; machinery imports
+10,Germany,DE,DEU,EUR,Europe,EU-SADC EPA,No,"Machinery, vehicles and industrial equipment"
+11,Japan,JP,JPN,JPY,East Asia,None,Yes,"Used and new vehicles, machinery"
+12,India,IN,IND,INR,South Asia,None,Yes,"Pharmaceuticals, textiles, generic goods"
+13,Singapore,SG,SGP,USD,Southeast Asia,None,No,Electronics trans-shipment hub
+14,Malaysia,MY,MYS,USD,Southeast Asia,None,No,"Palm oil, electronics"
+15,Namibia,NA,NAM,NAD,Southern Africa,SADC;AfCFTA,No,Walvis Bay port alternative transit route
+16,Tanzania,TZ,TZA,USD,East Africa,SADC;AfCFTA,No,Dar es Salaam port transit route
+17,Kenya,KE,KEN,USD,East Africa,COMESA;AfCFTA,No,COMESA preferential trade
+18,Malawi,MW,MWI,USD,Southern Africa,SADC;COMESA;AfCFTA,No,Bilateral trade agreement with Zimbabwe
+19,Egypt,EG,EGY,USD,North Africa,COMESA;AfCFTA,No,COMESA preferential trade
+20,Mauritius,MU,MUS,USD,Indian Ocean,COMESA;SADC;AfCFTA,No,COMESA/SADC preferential trade
+21,Thailand,TH,THA,USD,Southeast Asia,None,No,"Vehicles, rice, machinery"
+22,South Korea,KR,KOR,USD,East Asia,None,Yes,"Used and new vehicles, electronics"
+23,Turkey,TR,TUR,USD,Middle East / Europe,None,No,Textiles and clothing
+24,France,FR,FRA,EUR,Europe,EU-SADC EPA,No,Machinery and cosmetics
+25,Italy,IT,ITA,EUR,Europe,EU-SADC EPA,No,Machinery and fashion goods
+26,Netherlands,NL,NLD,EUR,Europe,EU-SADC EPA,No,Re-export/logistics hub for European goods
