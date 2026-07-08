@@ -15,7 +15,10 @@ class CalculationViewSet(viewsets.ModelViewSet):
     
     def get_queryset(self):
         if self.request.user.is_authenticated:
-            return SavedCalculation.objects.filter(user=self.request.user)
+            qs = SavedCalculation.objects.filter(user=self.request.user)
+            if self.request.query_params.get('history') != 'true':
+                qs = qs.filter(is_explicitly_saved=True)
+            return qs
         return SavedCalculation.objects.none()
 
     def get_permissions(self):
@@ -35,6 +38,32 @@ class CalculationViewSet(viewsets.ModelViewSet):
         try:
             calc_req = serializer.to_calculation_request()
             result = DutyCalculationEngine.calculate(calc_req)
+            
+            if request.user.is_authenticated:
+                SavedCalculation.objects.create(
+                    user=request.user,
+                    product=calc_req.product,
+                    hs_code=calc_req.hs_code,
+                    country=calc_req.country_of_origin,
+                    currency=calc_req.currency,
+                    trade_agreement=calc_req.trade_agreement,
+                    duty_exemption=calc_req.duty_exemption,
+                    product_price=calc_req.product_value,
+                    shipping_cost=calc_req.shipping_cost,
+                    insurance_cost=calc_req.insurance_cost,
+                    quantity=calc_req.quantity,
+                    exchange_rate_used=result.exchange_rate_used,
+                    total_customs_value=result.total_customs_value,
+                    total_import_duty=result.total_import_duty,
+                    total_vat=result.total_vat,
+                    total_surtax=result.total_surtax,
+                    total_excise=result.total_excise,
+                    total_carbon_tax=result.total_carbon_tax,
+                    other_charges=result.other_charges,
+                    grand_total=result.grand_total,
+                    is_explicitly_saved=False
+                )
+                
             return Response(result.to_dict(), status=status.HTTP_200_OK)
         except ValidationError as e:
             return Response({"errors": e.errors}, status=status.HTTP_400_BAD_REQUEST)
@@ -77,7 +106,8 @@ class CalculationViewSet(viewsets.ModelViewSet):
                 total_excise=result.total_excise,
                 total_carbon_tax=result.total_carbon_tax,
                 other_charges=result.other_charges,
-                grand_total=result.grand_total
+                grand_total=result.grand_total,
+                is_explicitly_saved=True
             )
             
             # Add to history

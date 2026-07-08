@@ -1,10 +1,11 @@
 import { Link, useLocation } from "react-router-dom"
-import { Calculator, FileText, Globe, Scale, LayoutDashboard, FolderHeart, Settings, User, LogOut } from "lucide-react"
+import { Calculator, Globe, Scale, LayoutDashboard, FolderHeart, Settings, User, LogOut, History } from "lucide-react"
 import { cn } from "../../lib/utils"
 import { useAuth } from "../../context/AuthContext"
 
 const mainNav = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { name: "History", href: "/dashboard/history", icon: History },
   { name: "Saved Calculations", href: "/dashboard/saved", icon: FolderHeart },
 ]
 

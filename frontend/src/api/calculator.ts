@@ -29,6 +29,16 @@ export const saveCalculationEstimate = async (data: CalculatorRequest & { notes?
   return response.data;
 };
 
+export const getSavedCalculations = async (history: boolean = false) => {
+  const response = await apiClient.get(`/calculations/${history ? '?history=true' : ''}`);
+  return response.data.results || response.data;
+};
+
+export const deleteSavedCalculation = async (id: string) => {
+  const response = await apiClient.delete(`/calculations/${id}/`);
+  return response.data;
+};
+
 export const getCurrencies = async () => {
   const response = await apiClient.get('/customs/currencies/');
   return response.data.results || response.data;

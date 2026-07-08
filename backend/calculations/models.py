@@ -31,6 +31,11 @@ class SavedCalculation(UUIDMixin, TimestampMixin, SoftDeleteMixin):
     other_charges = models.DecimalField(max_digits=15, decimal_places=2, default=0)
     
     grand_total = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    
+    is_explicitly_saved = models.BooleanField(
+        default=False, 
+        help_text="True if the user explicitly saved this, False if it was auto-logged in history"
+    )
 
     class Meta:
         ordering = ['-created_at']

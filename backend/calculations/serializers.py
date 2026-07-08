@@ -83,6 +83,10 @@ class CalculationEstimateRequestSerializer(serializers.Serializer):
         )
 
 class SavedCalculationSerializer(serializers.ModelSerializer):
+    hs_code_str = serializers.CharField(source='hs_code.code', read_only=True)
+    product_name = serializers.CharField(source='product.name', read_only=True)
+    currency_code = serializers.CharField(source='currency.code', read_only=True)
+
     class Meta:
         model = SavedCalculation
         fields = '__all__'

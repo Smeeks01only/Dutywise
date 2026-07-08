@@ -23,7 +23,7 @@ class DutyCalculationEngine:
         result = CalculationResult(
             hs_code_str=request.hs_code.code,
             product_name=request.product.name if request.product else None,
-            currency_code=request.currency.code,
+            currency_code="USD",
             exchange_rate_used=request.exchange_rate,
             import_date=request.import_date
         )

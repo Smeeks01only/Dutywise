@@ -15,6 +15,8 @@ import { ImportRulesPage } from "./pages/rules"
 import { DashboardPage } from "./pages/dashboard"
 import { ProfilePage } from "./pages/profile"
 import { SettingsPage } from "./pages/settings"
+import { SavedCalculationsPage } from "./pages/dashboard/SavedCalculations"
+import { HistoryPage } from "./pages/dashboard/History"
 
 import { LoginPage } from "./pages/login"
 import { RegisterPage } from "./pages/register"
@@ -87,7 +89,8 @@ export default function App() {
             <Route element={<ProtectedRoute />}>
               <Route path="/dashboard" element={<DashboardLayout />}>
                 <Route index element={<DashboardPage />} />
-                <Route path="saved" element={<div>Saved Calculations (Placeholder)</div>} />
+                <Route path="history" element={<HistoryPage />} />
+                <Route path="saved" element={<SavedCalculationsPage />} />
                 <Route path="profile" element={<ProfilePage />} />
                 <Route path="settings" element={<SettingsPage />} />
               </Route>
