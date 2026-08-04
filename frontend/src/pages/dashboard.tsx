@@ -1,145 +1,200 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
-import { FolderHeart, Calculator, Settings, ArrowRight, Loader2 } from "lucide-react"
-import { Button } from "../components/ui/button"
-import { useQuery } from '@tanstack/react-query'
-import { getSavedCalculations } from '../api/calculator'
-import { Link } from "react-router-dom"
+import { useState } from 'react';
+import type { FormEvent } from 'react';
+import { Card } from '../components/Card';
+import { Input } from '../components/Input';
+import { Select } from '../components/Select';
+import { Button } from '../components/Button';
+import { Loader2, Calculator, DollarSign, Package, Globe2, AlertCircle, Truck, Shield, TrendingUp } from 'lucide-react';
+import { useCalculateDuty } from '../hooks/useCalculateDuty';
+import type { CalculatePayload } from '../hooks/useCalculateDuty';
+import { DutyBreakdownChart } from '../features/calculator/DutyBreakdownChart';
+import { DutyBreakdownList } from '../features/calculator/DutyBreakdownList';
+import { ProductSearchInput } from '../features/calculator/ProductSearchInput';
+import { LiveExchangeRates } from '../features/calculator/LiveExchangeRates';
+import type { SelectOption } from '../components/Select';
 
-export function DashboardPage() {
-  const { data: calculations, isLoading } = useQuery({
-    queryKey: ['savedCalculations', 'history'],
-    queryFn: () => getSavedCalculations(true),
+const CURRENCY_OPTIONS: SelectOption[] = [
+  { value: 'USD', label: 'USD - US Dollar', icon: '🇺🇸' },
+  { value: 'ZWG', label: 'ZWG - ZiG', icon: '🇿🇼' },
+  { value: 'ZAR', label: 'ZAR - Rand', icon: '🇿🇦' },
+  { value: 'GBP', label: 'GBP - Pound', icon: '🇬🇧' },
+];
+
+export default function Dashboard() {
+  const mutation = useCalculateDuty();
+
+  // Form State
+  const [formData, setFormData] = useState<CalculatePayload>({
+    hs_code: '',
+    product_price: 0,
+    shipping_cost: 0,
+    insurance: 0,
+    quantity: 1,
+    currency: 'USD',
   });
+  const [searchDisplayValue, setSearchDisplayValue] = useState('');
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
+  // Validation State
+  const [errors, setErrors] = useState<Partial<Record<keyof CalculatePayload, string>>>({});
 
-  const history = calculations || [];
-  const savedCalculationsCount = history.filter((c: any) => c.is_explicitly_saved).length;
-  
-  const sevenDaysAgo = new Date();
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-  const recentEstimatesCount = history.filter((c: any) => new Date(c.created_at) > sevenDaysAgo).length;
+  const validate = (): boolean => {
+    const newErrors: Partial<Record<keyof CalculatePayload, string>> = {};
 
-  const recentActivity = history.slice(0, 3);
+    if (!formData.hs_code.trim()) newErrors.hs_code = 'HS Code is required';
+    if (formData.product_price <= 0) newErrors.product_price = 'Price must be greater than 0';
+    if (formData.shipping_cost < 0) newErrors.shipping_cost = 'Shipping cannot be negative';
+    if (formData.insurance && formData.insurance < 0) newErrors.insurance = 'Insurance cannot be negative';
+    if (formData.quantity <= 0) newErrors.quantity = 'Quantity must be at least 1';
 
-  const formatCurrency = (amount: string | number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: "USD",
-    }).format(typeof amount === 'string' ? parseFloat(amount) : amount);
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (validate()) {
+      mutation.mutate(formData);
+    }
+  };
+
+  const handleChange = (field: keyof CalculatePayload, value: string | number) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    // Clear error on type
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
+    }
   };
 
   return (
-    <div className="flex flex-col space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">Overview</h1>
-        <p className="text-text-secondary mt-2">Welcome back to your DutyWise dashboard.</p>
-      </div>
-      
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="flex flex-col gap-8 pb-12">
+      {/* Input Section */}
+      <section>
+        <div className="flex justify-between items-start sm:items-center mb-8">
+          <div>
+            <h1 className="text-3xl font-semibold text-neutral-800 tracking-tight">Duty Calculator</h1>
+            <p className="text-neutral-500 mt-2 font-medium">Estimate your total landed cost before you import.</p>
+          </div>
+          <a href="#exchange-rates" className="hidden sm:flex items-center gap-2 bg-primary-50 text-primary-600 px-4 py-2 rounded-full text-sm font-semibold hover:bg-primary-100 transition-colors">
+            <TrendingUp className="h-4 w-4" />
+            Live Exchange Rates
+          </a>
+        </div>
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Saved Calculations</CardTitle>
-            <FolderHeart className="h-4 w-4 text-text-secondary" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{savedCalculationsCount}</div>
-            <p className="text-xs text-text-secondary mt-1">
-              Total explicitly saved
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Recent Estimates</CardTitle>
-            <Calculator className="h-4 w-4 text-text-secondary" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{recentEstimatesCount}</div>
-            <p className="text-xs text-text-secondary mt-1">
-              In the last 7 days
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Account Settings</CardTitle>
-            <Settings className="h-4 w-4 text-text-secondary" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">Active</div>
-            <p className="text-xs text-text-secondary mt-1">
-              Standard User
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              
+              <ProductSearchInput
+                label="Product / HS Code"
+                value={searchDisplayValue}
+                onSelectProduct={(code, name) => {
+                  setFormData((prev) => ({ ...prev, hs_code: code }));
+                  setSearchDisplayValue(name);
+                  if (errors.hs_code) setErrors((prev) => ({ ...prev, hs_code: undefined }));
+                }}
+                onClear={() => {
+                  setFormData((prev) => ({ ...prev, hs_code: '' }));
+                  setSearchDisplayValue('');
+                }}
+                error={errors.hs_code}
+              />
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-4">
-          <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
-            <CardDescription>
-              Your recent calculations and searches
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {recentActivity.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No recent activity found.</p>
-            ) : (
-              <div className="space-y-8">
-                {recentActivity.map((calc: any) => (
-                  <div key={calc.id} className="flex items-center">
-                    <div className="ml-4 space-y-1">
-                      <p className="text-sm font-medium leading-none">
-                        {calc.product_name || calc.hs_code_str || "Custom Calculation"}
-                        {calc.is_explicitly_saved && <span className="ml-2 text-xs text-blue-500 font-normal">(Saved)</span>}
-                      </p>
-                      <p className="text-sm text-text-secondary">
-                        Estimated duty: {formatCurrency(parseFloat(calc.grand_total) - parseFloat(calc.total_customs_value))}
-                      </p>
-                    </div>
-                    <div className="ml-auto font-medium">
-                      <Button variant="ghost" size="icon" asChild>
-                        <Link to="/dashboard/history">
-                          <ArrowRight className="h-4 w-4" />
-                        </Link>
-                      </Button>
-                    </div>
-                  </div>
-                ))}
+              <Input
+                label="Product Price"
+                type="number"
+                min="0"
+                step="0.01"
+                icon={<DollarSign className="h-4 w-4" />}
+                value={formData.product_price || ''}
+                onChange={(e) => handleChange('product_price', parseFloat(e.target.value) || 0)}
+                error={errors.product_price}
+                required
+              />
+
+              <Input
+                label="Shipping Cost"
+                type="number"
+                min="0"
+                step="0.01"
+                icon={<Truck className="h-4 w-4" />}
+                value={formData.shipping_cost || ''}
+                onChange={(e) => handleChange('shipping_cost', parseFloat(e.target.value) || 0)}
+                error={errors.shipping_cost}
+                required
+              />
+
+              <Input
+                label="Insurance (Optional)"
+                type="number"
+                min="0"
+                step="0.01"
+                icon={<Shield className="h-4 w-4" />}
+                value={formData.insurance || ''}
+                onChange={(e) => handleChange('insurance', parseFloat(e.target.value) || 0)}
+                error={errors.insurance}
+              />
+
+              <Input
+                label="Quantity"
+                type="number"
+                min="1"
+                step="1"
+                icon={<Package className="h-4 w-4" />}
+                value={formData.quantity || ''}
+                onChange={(e) => handleChange('quantity', parseInt(e.target.value, 10) || 1)}
+                error={errors.quantity}
+                required
+              />
+
+              <Select
+                label="Currency"
+                icon={<Globe2 className="h-4 w-4" />}
+                value={formData.currency}
+                onChange={(val) => handleChange('currency', val.toString())}
+                options={CURRENCY_OPTIONS}
+                error={errors.currency}
+              />
+            </div>
+
+            {/* API Error State */}
+            {mutation.isError && (
+              <div className="flex items-center gap-2 text-red-700 bg-red-50 p-4 rounded-lg border border-red-200">
+                <AlertCircle size={20} />
+                <span className="font-medium">
+                  {mutation.error?.response?.data?.error || 'An unexpected error occurred while calculating duty.'}
+                </span>
               </div>
             )}
-          </CardContent>
-        </Card>
-        
-        <Card className="col-span-3">
-          <CardHeader>
-            <CardTitle>Quick Links</CardTitle>
-            <CardDescription>
-              Helpful resources
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Button variant="outline" className="w-full justify-start" asChild>
-              <Link to="/calculator">
-                <Calculator className="mr-2 h-4 w-4" /> New Calculation
-              </Link>
+
+            <Button type="submit" className="w-full h-12 text-lg mt-2 shadow-sm" disabled={mutation.isPending}>
+              {mutation.isPending ? (
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  Calculating...
+                </>
+              ) : (
+                <>
+                  <Calculator className="mr-2 h-5 w-5" />
+                  Calculate Duty
+                </>
+              )}
             </Button>
-            <Button variant="outline" className="w-full justify-start" asChild>
-              <Link to="/dashboard/saved">
-                <FolderHeart className="mr-2 h-4 w-4" /> View Saved Items
-              </Link>
-            </Button>
-          </CardContent>
+          </form>
         </Card>
-      </div>
+
+        <div id="exchange-rates" className="mt-8 scroll-mt-6">
+          <LiveExchangeRates />
+        </div>
+      </section>
+
+      {/* Results Section */}
+      {mutation.isSuccess && mutation.data && (
+        <section className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <DutyBreakdownChart data={mutation.data} />
+            <DutyBreakdownList data={mutation.data} payload={formData} />
+          </div>
+        </section>
+      )}
     </div>
-  )
+  );
 }

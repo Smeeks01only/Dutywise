@@ -1,24 +1,24 @@
 from django.urls import path
-from rest_framework_simplejwt.views import TokenRefreshView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .views import (
-    RegisterView,
-    CustomTokenObtainPairView,
-    LogoutView,
+    RegisterView, 
+    SavedCalculationListCreateView, 
+    SavedCalculationDestroyView,
     UserProfileView,
-    PasswordChangeView,
-    PasswordResetRequestView,
-    PasswordResetConfirmView
+    ChangePasswordView
 )
 
 urlpatterns = [
-    path('register/', RegisterView.as_view(), name='auth_register'),
-    path('login/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('logout/', LogoutView.as_view(), name='auth_logout'),
+    # Auth endpoints
+    path('auth/register/', RegisterView.as_view(), name='register'),
+    path('auth/login/', TokenObtainPairView.as_view(), name='login'),
+    path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     
-    path('profile/', UserProfileView.as_view(), name='user_profile'),
+    # Profile endpoints
+    path('auth/me/', UserProfileView.as_view(), name='user-profile'),
+    path('auth/change-password/', ChangePasswordView.as_view(), name='change-password'),
     
-    path('password/change/', PasswordChangeView.as_view(), name='password_change'),
-    path('password/reset/', PasswordResetRequestView.as_view(), name='password_reset_request'),
-    path('password/reset/confirm/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    # Saved calculations
+    path('calculations/', SavedCalculationListCreateView.as_view(), name='calculation-list-create'),
+    path('calculations/<int:pk>/', SavedCalculationDestroyView.as_view(), name='calculation-delete'),
 ]

@@ -1,155 +1,172 @@
-import { Link, useNavigate } from "react-router-dom"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useState } from "react"
-import { Loader2 } from "lucide-react"
+import { useState, useMemo } from 'react';
+import type { FormEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import { Input } from '../components/Input';
+import { Button } from '../components/Button';
+import { Loader2, AlertCircle, Eye, EyeOff, Globe2, Check, X } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
+import client from '../api/client';
 
-import { Button } from "../components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/card"
-import { Input } from "../components/ui/input"
-import { Label } from "../components/ui/label"
-import { useAuth } from "../context/AuthContext"
-import { registerSchema, type RegisterCredentials } from "../api/auth"
+export default function Register() {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+  
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [validationError, setValidationError] = useState('');
 
-export function RegisterPage() {
-  const { register: authRegister } = useAuth()
-  const navigate = useNavigate()
-  const [authError, setAuthError] = useState<string | null>(null)
+  // Password validation rules
+  const hasMinLength = password.length >= 8;
+  const passwordsMatch = password.length > 0 && password === confirmPassword;
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<RegisterCredentials>({
-    resolver: zodResolver(registerSchema),
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      country: "",
-      password: "",
-      confirmPassword: "",
+  const registerMutation = useMutation<
+    any,
+    AxiosError<{ email?: string[]; password?: string[]; non_field_errors?: string[] }>,
+    void
+  >({
+    mutationFn: async () => {
+      const { data } = await client.post('/auth/register/', { email, password, confirm_password: confirmPassword });
+      return data;
     },
-  })
-
-  const onSubmit = async (data: RegisterCredentials) => {
-    try {
-      setAuthError(null)
-      await authRegister(data)
-      navigate("/dashboard")
-    } catch (err: any) {
-      if (err.response?.data?.email) {
-        setAuthError(err.response.data.email[0])
-      } else {
-        setAuthError("Registration failed. Please check your information and try again.")
+    onSuccess: async () => {
+      try {
+        const { data } = await client.post('/auth/login/', { email, password });
+        login(data.access, data.refresh, email);
+        navigate('/');
+      } catch (err) {
+        navigate('/login');
       }
+    },
+  });
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    setValidationError('');
+
+    if (!hasMinLength) {
+      setValidationError('Password must be at least 8 characters long.');
+      return;
     }
-  }
+    if (!passwordsMatch) {
+      setValidationError('Passwords do not match.');
+      return;
+    }
+
+    registerMutation.mutate();
+  };
+
+  const renderApiError = () => {
+    if (!registerMutation.isError) return null;
+    const errors = registerMutation.error?.response?.data;
+    if (!errors) return 'An unexpected error occurred during registration.';
+    
+    if (errors.email) return `Email: ${errors.email[0]}`;
+    if (errors.password) return `Password: ${errors.password[0]}`;
+    if (errors.non_field_errors) return errors.non_field_errors[0];
+    
+    return 'Failed to create account.';
+  };
 
   return (
-    <Card className="w-full shadow-xl">
-      <CardHeader className="space-y-1 text-center">
-        <CardTitle className="text-2xl font-bold tracking-tight text-slate-900">Create an account</CardTitle>
-        <CardDescription>
-          Enter your information to create your account
-        </CardDescription>
-      </CardHeader>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <CardContent className="space-y-4">
-          
-          {authError && (
-            <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded-md text-sm">
-              {authError}
-            </div>
-          )}
+    <div className="flex min-h-screen bg-white">
+      {/* Left Panel - Brand */}
+      <div className="hidden lg:flex lg:w-1/2 bg-neutral-50 flex-col justify-center items-center p-12 border-r border-neutral-200">
+        <Globe2 className="h-16 w-16 text-primary-500 mb-6" />
+        <h1 className="text-3xl font-semibold tracking-tight text-neutral-900 mb-2">DutyWise</h1>
+        <p className="text-neutral-500 text-lg max-w-sm text-center">
+          Join DutyWise to save your calculations and build your importing history.
+        </p>
+      </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="firstName" className={errors.firstName ? "text-red-500" : ""}>First name</Label>
-              <Input 
-                id="firstName" 
-                placeholder="John" 
-                className={errors.firstName ? "border-red-500 focus-visible:ring-red-500" : ""}
-                {...register("firstName")}
+      {/* Right Panel - Form */}
+      <div className="flex w-full lg:w-1/2 flex-col justify-center px-4 py-12 sm:px-6 lg:px-20 xl:px-24">
+        <div className="mx-auto w-full max-w-sm">
+          <div className="text-center mb-8 lg:text-left">
+            <div className="flex lg:hidden justify-center items-center gap-2 mb-6">
+              <Globe2 className="h-8 w-8 text-primary-500" />
+              <span className="text-2xl font-semibold tracking-tight text-neutral-900">DutyWise</span>
+            </div>
+            <h2 className="text-2xl font-semibold text-neutral-900 tracking-tight">Create an Account</h2>
+            <p className="text-sm text-neutral-500 mt-2">Sign up to save your calculations</p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+            <Input
+              label="Email address"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              required
+            />
+            <div className="flex flex-col gap-1.5">
+              <Input
+                label="Password"
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="At least 8 characters"
+                required
+                iconRight={showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                onIconRightClick={() => setShowPassword(!showPassword)}
               />
-              {errors.firstName && <p className="text-xs text-red-500">{errors.firstName.message}</p>}
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="lastName" className={errors.lastName ? "text-red-500" : ""}>Last name</Label>
-              <Input 
-                id="lastName" 
-                placeholder="Doe" 
-                className={errors.lastName ? "border-red-500 focus-visible:ring-red-500" : ""}
-                {...register("lastName")}
-              />
-              {errors.lastName && <p className="text-xs text-red-500">{errors.lastName.message}</p>}
+            
+            <Input
+              label="Confirm Password"
+              type={showConfirmPassword ? 'text' : 'password'}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Type your password again"
+              required
+              iconRight={showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              onIconRightClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            />
+
+            {/* Password Validation Hints */}
+            <div className="flex flex-col gap-2 mt-1">
+              <div className={`flex items-center gap-2 text-xs font-medium transition-colors ${password.length === 0 ? 'text-neutral-500' : (hasMinLength ? 'text-green-600' : 'text-neutral-500')}`}>
+                {password.length > 0 && hasMinLength ? <Check className="h-3.5 w-3.5" /> : <X className="h-3.5 w-3.5 opacity-50" />}
+                At least 8 characters
+              </div>
+              <div className={`flex items-center gap-2 text-xs font-medium transition-colors ${confirmPassword.length === 0 ? 'text-neutral-500' : (passwordsMatch ? 'text-green-600' : 'text-neutral-500')}`}>
+                {confirmPassword.length > 0 && passwordsMatch ? <Check className="h-3.5 w-3.5" /> : <X className="h-3.5 w-3.5 opacity-50" />}
+                Passwords match
+              </div>
             </div>
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="email" className={errors.email ? "text-red-500" : ""}>Email</Label>
-            <Input 
-              id="email" 
-              type="email" 
-              placeholder="m@example.com" 
-              className={errors.email ? "border-red-500 focus-visible:ring-red-500" : ""}
-              {...register("email")}
-            />
-            {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
-          </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="country" className={errors.country ? "text-red-500" : ""}>Country</Label>
-            <Input 
-              id="country" 
-              placeholder="Zimbabwe" 
-              className={errors.country ? "border-red-500 focus-visible:ring-red-500" : ""}
-              {...register("country")}
-            />
-            {errors.country && <p className="text-xs text-red-500">{errors.country.message}</p>}
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="password" className={errors.password ? "text-red-500" : ""}>Password</Label>
-            <Input 
-              id="password" 
-              type="password" 
-              className={errors.password ? "border-red-500 focus-visible:ring-red-500" : ""}
-              {...register("password")}
-            />
-            {errors.password && <p className="text-xs text-red-500">{errors.password.message}</p>}
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="confirmPassword" className={errors.confirmPassword ? "text-red-500" : ""}>Confirm Password</Label>
-            <Input 
-              id="confirmPassword" 
-              type="password" 
-              className={errors.confirmPassword ? "border-red-500 focus-visible:ring-red-500" : ""}
-              {...register("confirmPassword")}
-            />
-            {errors.confirmPassword && <p className="text-xs text-red-500">{errors.confirmPassword.message}</p>}
-          </div>
-        </CardContent>
-        <CardFooter className="flex flex-col space-y-4 pt-4">
-          <Button type="submit" className="w-full font-semibold shadow-lg shadow-primary/20" disabled={isSubmitting}>
-            {isSubmitting ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Creating account...
-              </>
-            ) : (
-              "Create account"
+            {(validationError || registerMutation.isError) && (
+              <div className="flex items-center gap-2 text-sm text-red-700 bg-red-50 p-3 rounded-lg border border-red-200">
+                <AlertCircle className="h-4 w-4 shrink-0" />
+                <span>{validationError || renderApiError()}</span>
+              </div>
             )}
-          </Button>
-          <div className="text-center text-sm text-slate-500">
-            Already have an account?{" "}
-            <Link to="/login" className="font-medium text-primary hover:underline">
-              Sign in
+
+            <Button type="submit" disabled={registerMutation.isPending || !email || !hasMinLength || !passwordsMatch} className="w-full mt-2 h-11">
+              {registerMutation.isPending ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Creating account...
+                </>
+              ) : (
+                'Create account'
+              )}
+            </Button>
+          </form>
+
+          <p className="text-center lg:text-left text-sm text-neutral-500 mt-8">
+            Already have an account?{' '}
+            <Link to="/login" className="font-semibold text-primary-500 hover:text-primary-600 transition-colors">
+              Log in
             </Link>
-          </div>
-        </CardFooter>
-      </form>
-    </Card>
-  )
+          </p>
+        </div>
+      </div>
+    </div>
+  );
 }

@@ -1,92 +1,21 @@
-import uuid
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
-from django.utils import timezone
-from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import User
+from tariffs.models import HSCode
 
-class CustomUserManager(BaseUserManager):
-    def create_user(self, email, password=None, **extra_fields):
-        if not email:
-            raise ValueError(_('The Email must be set'))
-        email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
-        if password:
-            user.set_password(password)
-        else:
-            user.set_unusable_password()
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(self, email, password, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('is_active', True)
-
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError(_('Superuser must have is_staff=True.'))
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError(_('Superuser must have is_superuser=True.'))
-
-        return self.create_user(email, password, **extra_fields)
-
-
-class User(AbstractBaseUser, PermissionsMixin):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    email = models.EmailField(_('email address'), unique=True)
-    username = models.CharField(max_length=150, blank=True, null=True)
-    first_name = models.CharField(_('first name'), max_length=150, blank=True)
-    last_name = models.CharField(_('last name'), max_length=150, blank=True)
-    phone_number = models.CharField(max_length=20, blank=True, null=True)
-    country = models.CharField(max_length=100, blank=True, null=True)
+class SavedCalculation(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='saved_calculations')
+    hs_code = models.ForeignKey(HSCode, on_delete=models.CASCADE)
     
-    profile_picture = models.ImageField(upload_to='avatars/', blank=True, null=True)
-    preferred_currency = models.CharField(max_length=3, default='USD')
-    preferred_theme = models.CharField(max_length=20, default='light')
+    # Store the original request inputs (e.g., price, shipping, quantity, currency)
+    input_snapshot = models.JSONField()
     
-    email_verified = models.BooleanField(default=False)
-    
-    is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-    
-    date_joined = models.DateTimeField(default=timezone.now)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    deleted_at = models.DateTimeField(blank=True, null=True)
-
-    objects = CustomUserManager()
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
-
-    def __str__(self):
-        return self.email
-
-    def soft_delete(self):
-        self.is_active = False
-        self.deleted_at = timezone.now()
-        self.save()
-
-
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    
-    company_name = models.CharField(max_length=255, blank=True, null=True)
-    business_type = models.CharField(max_length=100, blank=True, null=True)
-    
-    address = models.TextField(blank=True, null=True)
-    city = models.CharField(max_length=100, blank=True, null=True)
-    country = models.CharField(max_length=100, blank=True, null=True)
-    
-    preferred_language = models.CharField(max_length=10, default='en')
-    timezone = models.CharField(max_length=50, default='UTC')
-    
-    receive_email_notifications = models.BooleanField(default=True)
-    receive_marketing_emails = models.BooleanField(default=False)
-    
-    biography = models.TextField(blank=True, null=True)
+    # Store the full calculation result dict
+    result_snapshot = models.JSONField()
     
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
 
     def __str__(self):
-        return f"{self.user.email} Profile"
+        return f"Calculation by {self.user.username} on {self.created_at.strftime('%Y-%m-%d')}"

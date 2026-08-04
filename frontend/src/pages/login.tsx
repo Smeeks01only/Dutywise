@@ -1,127 +1,119 @@
-import { Link, useNavigate, useLocation } from "react-router-dom"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useState } from "react"
-import { Loader2 } from "lucide-react"
+import { useState } from 'react';
+import type { FormEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import { Input } from '../components/Input';
+import { Button } from '../components/Button';
+import { Loader2, AlertCircle, Eye, EyeOff, Globe2 } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
+import client from '../api/client';
 
-import { Button } from "../components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/card"
-import { Input } from "../components/ui/input"
-import { Label } from "../components/ui/label"
-import { Checkbox } from "../components/ui/checkbox"
-import { useAuth } from "../context/AuthContext"
-import { loginSchema, type LoginCredentials } from "../api/auth"
-
-export function LoginPage() {
-  const { login } = useAuth()
-  const navigate = useNavigate()
-  const location = useLocation()
-  const [authError, setAuthError] = useState<string | null>(null)
+export default function Login() {
+  const navigate = useNavigate();
+  const { login } = useAuth();
   
-  const from = location.state?.from?.pathname || "/dashboard"
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<LoginCredentials>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-      rememberMe: false,
+  const mutation = useMutation<
+    { access: string; refresh: string },
+    AxiosError<{ detail?: string; non_field_errors?: string[] }>,
+    void
+  >({
+    mutationFn: async () => {
+      const { data } = await client.post('/auth/login/', { email, password });
+      return data;
     },
-  })
+    onSuccess: (data) => {
+      login(data.access, data.refresh, email);
+      navigate('/');
+    },
+  });
 
-  const onSubmit = async (data: LoginCredentials) => {
-    try {
-      setAuthError(null)
-      const loggedInUser = await login(data)
-      if (loggedInUser.is_staff) {
-        navigate('/admin', { replace: true })
-      } else {
-        navigate(from, { replace: true })
-      }
-    } catch (err: any) {
-      if (err.response?.status === 401) {
-        setAuthError("Invalid email or password.")
-      } else {
-        setAuthError("An unexpected error occurred. Please try again.")
-      }
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (email && password) {
+      mutation.mutate();
     }
-  }
+  };
+
+  const errorMessage = mutation.error?.response?.data?.detail 
+    || mutation.error?.response?.data?.non_field_errors?.[0] 
+    || 'Invalid credentials or an error occurred.';
 
   return (
-    <Card className="w-full shadow-xl">
-      <CardHeader className="space-y-1 text-center">
-        <CardTitle className="text-2xl font-bold tracking-tight text-slate-900">Welcome back</CardTitle>
-        <CardDescription>
-          Enter your email and password to sign in
-        </CardDescription>
-      </CardHeader>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <CardContent className="space-y-4">
-          
-          {authError && (
-            <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded-md text-sm">
-              {authError}
-            </div>
-          )}
+    <div className="flex min-h-screen bg-white">
+      {/* Left Panel - Brand (Hidden on mobile) */}
+      <div className="hidden lg:flex lg:w-1/2 bg-neutral-50 flex-col justify-center items-center p-12 border-r border-neutral-200">
+        <Globe2 className="h-16 w-16 text-primary-500 mb-6" />
+        <h1 className="text-3xl font-semibold tracking-tight text-neutral-900 mb-2">DutyWise</h1>
+        <p className="text-neutral-500 text-lg max-w-sm text-center">
+          Know exactly what you'll pay before your package arrives.
+        </p>
+      </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="email" className={errors.email ? "text-red-500" : ""}>Email</Label>
-            <Input 
-              id="email" 
-              type="email" 
-              placeholder="m@example.com" 
-              className={errors.email ? "border-red-500 focus-visible:ring-red-500" : ""}
-              {...register("email")} 
-            />
-            {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
-          </div>
-          
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="password" className={errors.password ? "text-red-500" : ""}>Password</Label>
-              <Link to="/forgot-password" className="text-sm font-medium text-primary hover:underline">
-                Forgot password?
-              </Link>
+      {/* Right Panel - Form */}
+      <div className="flex w-full lg:w-1/2 flex-col justify-center px-4 py-12 sm:px-6 lg:px-20 xl:px-24">
+        <div className="mx-auto w-full max-w-sm">
+          <div className="text-center mb-8 lg:text-left">
+            {/* Mobile logo only */}
+            <div className="flex lg:hidden justify-center items-center gap-2 mb-6">
+              <Globe2 className="h-8 w-8 text-primary-500" />
+              <span className="text-2xl font-semibold tracking-tight text-neutral-900">DutyWise</span>
             </div>
-            <Input 
-              id="password" 
-              type="password" 
-              className={errors.password ? "border-red-500 focus-visible:ring-red-500" : ""}
-              {...register("password")} 
+            <h2 className="text-2xl font-semibold text-neutral-900 tracking-tight">Welcome back</h2>
+            <p className="text-sm text-neutral-500 mt-2">Log in to your account to continue</p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+            <Input
+              label="Email address"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              required
             />
-            {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
-          </div>
-          
-          <div className="flex items-center space-x-2">
-            <Checkbox id="remember" {...register("rememberMe")} />
-            <Label htmlFor="remember" className="text-sm font-normal text-slate-500 cursor-pointer">
-              Remember me for 30 days
-            </Label>
-          </div>
-        </CardContent>
-        <CardFooter className="flex flex-col space-y-4 pt-4">
-          <Button type="submit" className="w-full font-semibold shadow-lg shadow-primary/20" disabled={isSubmitting}>
-            {isSubmitting ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Signing in...
-              </>
-            ) : (
-              "Sign in"
+            <Input
+              label="Password"
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              required
+              iconRight={showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              onIconRightClick={() => setShowPassword(!showPassword)}
+            />
+
+            {mutation.isError && (
+              <div className="flex items-center gap-2 text-sm text-red-700 bg-red-50 p-3 rounded-lg border border-red-200">
+                <AlertCircle className="h-4 w-4 shrink-0" />
+                <span>{errorMessage}</span>
+              </div>
             )}
-          </Button>
-          <div className="text-center text-sm text-slate-500">
-            Don't have an account?{" "}
-            <Link to="/register" className="font-medium text-primary hover:underline">
-              Sign up
+
+            <Button type="submit" disabled={mutation.isPending || !email || !password} className="w-full mt-2 h-11">
+              {mutation.isPending ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Logging in...
+                </>
+              ) : (
+                'Log in'
+              )}
+            </Button>
+          </form>
+
+          <p className="text-center lg:text-left text-sm text-neutral-500 mt-8">
+            Don't have an account?{' '}
+            <Link to="/register" className="font-semibold text-primary-500 hover:text-primary-600 transition-colors">
+              Create one
             </Link>
-          </div>
-        </CardFooter>
-      </form>
-    </Card>
-  )
+          </p>
+        </div>
+      </div>
+    </div>
+  );
 }
